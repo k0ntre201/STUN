@@ -9,12 +9,14 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
+            //if (!STUNClient.TryParseHostAndPort("stun3.l.google.com:19302", out IPEndPoint stunEndPoint))
             if (!STUNUtils.TryParseHostAndPort("stun.schlund.de:3478", out IPEndPoint stunEndPoint))
+                //if (!STUNUtils.TryParseHostAndPort("52.170.72.126:3478", out IPEndPoint stunEndPoint))
                 throw new Exception("Failed to resolve STUN server address");
 
             STUNClient.ReceiveTimeout = 500;
             var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc5780);
-            
+
             if (queryResult.QueryError != STUNQueryError.Success)
                 throw new Exception("Query Error: " + queryResult.QueryError.ToString());
 

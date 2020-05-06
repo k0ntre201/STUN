@@ -7,7 +7,7 @@ namespace STUN.Attributes
 {
     public class STUNRfc3489
     {
-        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
+        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, IPAddress[] localIPs, int ReceiveTimeout)
         {
             var result = new STUNQueryResult(); // the query result
             result.Socket = socket;
@@ -100,7 +100,7 @@ namespace STUN.Attributes
             }
 
             // if our local ip and port equals to mapped address
-            if (mappedAddressAttr.EndPoint.Equals(socket.LocalEndPoint))
+            if (mappedAddressAttr.EndPoint.Equals(socket.LocalEndPoint) || localIPs.Contains(mappedAddressAttr.EndPoint.Address))
             {
                 // we send to a binding request again but with change-request attribute
                 // that tells to server to response us with different endpoint

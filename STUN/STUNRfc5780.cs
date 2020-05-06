@@ -7,7 +7,7 @@ namespace STUN
 {
     public class STUNRfc5780
     {
-        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
+        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, IPAddress[] localIPs, int ReceiveTimeout)
         {
             STUNNatMappingBehavior mappingBehavior = STUNNatMappingBehavior.EndpointIndependentMapping;
             STUNNatFilteringBehavior filteringBehavior = STUNNatFilteringBehavior.EndpointIndependentFiltering;
@@ -95,7 +95,7 @@ namespace STUN
             }
 
 
-            if (xorAddressAttribute.EndPoint.Equals(socket.LocalEndPoint))
+            if (xorAddressAttribute.EndPoint.Equals(socket.LocalEndPoint) || localIPs.Contains(xorAddressAttribute.EndPoint.Address))
             {
                 result.NATType = STUNNATType.OpenInternet;
             }
